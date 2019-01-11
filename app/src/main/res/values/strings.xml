@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Quizzler</string>
+
+    <string name="true_button">Verdadeiro</string>
+    <string name="false_button">Falso</string>
+    <string name="initial_score">Score 0/10</string>
+
+    <string name="incorrect_toast">Errou</string>
+    <string name="correct_toast">Acertou!</string>
+
+    <string name="question_1">Tonga é um país da África.</string>
+    <string name="question_2">A África está localizada nos quatro hemisférios terrestres (Hemisférios Norte, Sul, Ocidental e Oriental).</string>
+    <string name="question_3">O Brasil faz fronteira com um membro da União Europeia.</string>
+    <string name="question_4">Porto Rico é um país.</string>
+    <string name="question_5">Quem nasce em Estocolmo, capital da Suécia é estocolmiense.</string>
+    <string name="question_6">República da China é o nome oficial de Taiwan.</string>
+    <string name="question_7">O Inglês é o idioma oficial de jure da Inglaterra.</string>
+    <string name="question_8">A Rússia é maior que a América do Norte.</string>
+    <string name="question_9">A Índia é mais populosa que a Europa.</string>
+    <string name="question_10">O Vaticano é mais povoado que a China.</string>
+    <string name="question_11">No governo federal, durante a chamada República Velha, predominou a defesa dos interesses da oligarquia agrária.</string>
+    <string name="question_12">Durante o período colonial, predominou o trabalho escravo indígena nos engenhos de açúcar do Nordeste brasileiro.</string>
+    <string name="question_13">O parlamentarismo no Brasil foi instalado durante o Segundo Império, com a criação da função de presidente do Conselho de Ministros.</string>
+    <string name="question_14">Durante a ditadura do Estado Novo, Getúlio Vargas enviou tropas brasileiras para lutarem ao lado dos alemães na II Guerra Mundial.</string>
+    <string name="question_15">Ao longo do século XVIII, a principal atividade econômica cearense foi a pecuária, por meio da qual se desenvolveu o comércio do charque.</string>
+    <string name="question_16">A independência do Brasil situou-se no contexto da primeira onda revolucionária liberal europeia do século XIX.</string>
+    <string name="question_17">A queda do muro de Berlim foi símbolo expressivo da crise do socialismo no leste europeu.</string>
+    <string name="question_18">A urbanização brasileira procedeu-se independentemente de correntes migratórias vindas do campo.</string>
+    <string name="question_19">O tenentismo foi um movimento militar que, nos anos 20 do século XX, levantou-se para sustentar os governos da República Velha.</string>
+    <string name="question_20">O fascismo e o nazismo foram exemplos de regimes abertos e democráticos que o século XX conheceu.</string>
+
+
+</resources>

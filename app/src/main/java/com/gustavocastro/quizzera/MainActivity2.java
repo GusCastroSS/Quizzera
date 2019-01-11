@@ -1,0 +1,170 @@
+package com.gustavocastro.quizzera;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.gustavocastro.quizzera.R;
+
+import static android.widget.Toast.makeText;
+
+public class MainActivity2 extends Activity {
+
+
+    Button mTrueButton;
+    Button mFalseButton;
+    TextView mScoreTextView;
+    TextView mQuestionTextView;
+    ProgressBar mProgressBar;
+    int mIndex;
+    int mScore;
+    int mQuestion;
+    Toast mToastMessage;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference scoreRef;
+    private FirebaseAuth mAuth;
+
+
+    @NonNull
+    private TrueFalse[] mQuestionBank = new TrueFalse[] {
+            new TrueFalse(R.string.question_11, true),
+            new TrueFalse(R.string.question_12, false),
+            new TrueFalse(R.string.question_13, true),
+            new TrueFalse(R.string.question_14, false),
+            new TrueFalse(R.string.question_15, true),
+            new TrueFalse(R.string.question_16, true),
+            new TrueFalse(R.string.question_17, true),
+            new TrueFalse(R.string.question_18, false),
+            new TrueFalse(R.string.question_19, false),
+            new TrueFalse(R.string.question_20, false),
+
+    };
+
+
+    final int PROGRESS_BAR_INCREMENT = (int) Math.ceil(100.0 / mQuestionBank.length);
+
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String userId = currentUser.getUid();
+        scoreRef = mFirebaseDatabase.getReference().child(userId);
+
+
+        mTrueButton = findViewById(R.id.true_button);
+        mFalseButton = findViewById(R.id.false_button);
+        mQuestionTextView = findViewById(R.id.question_text_view);
+        mScoreTextView = findViewById(R.id.score);
+        mProgressBar = findViewById(R.id.progress_bar);
+
+
+        if (savedInstanceState != null) {
+            mScore = savedInstanceState.getInt("ScoreKey");
+            mIndex = savedInstanceState.getInt("IndexKey");
+            mScoreTextView.setText("Score " + mScore + "/" + mQuestionBank.length);
+        } else {
+            mScore = 0;
+            mIndex = 0;
+        }
+
+        mQuestion = mQuestionBank[mIndex].getQuestionID();
+        mQuestionTextView.setText(mQuestion);
+
+        mTrueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkAnswer(true);
+                updateQuestion();
+            }
+        });
+
+        mFalseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkAnswer(false);
+                updateQuestion();
+            }
+        });
+
+    }
+
+    private void updateQuestion() {
+
+        mIndex = (mIndex + 1) % mQuestionBank.length;
+
+        if(mIndex == 0) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Fim de jogo!");
+            alert.setCancelable(false);
+            alert.setMessage("Você conseguiu " + mScore + " pontos!");
+            alert.setPositiveButton("Jogar novamente", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    scoreRef.child("pontuacao").setValue(mScore);
+
+                    Intent i = new Intent(MainActivity2.this, Categorias.class);
+                    startActivity(i);
+                }
+            });
+            alert.show();
+        }
+
+        mQuestion = mQuestionBank[mIndex].getQuestionID();
+        mQuestionTextView.setText(mQuestion);
+        mProgressBar.incrementProgressBy(PROGRESS_BAR_INCREMENT);
+        mScoreTextView.setText("Pontuação " + mScore + "/" + mQuestionBank.length);
+    }
+
+    private void checkAnswer(boolean userSelection) {
+
+        boolean correctAnswer = mQuestionBank[mIndex].isAnswer();
+
+
+        if (mToastMessage != null) {
+            mToastMessage.cancel();
+        }
+
+        if(userSelection == correctAnswer) {
+            mToastMessage = makeText(getApplicationContext(), R.string.correct_toast, Toast.LENGTH_SHORT);
+            mScore = mScore + 1;
+
+        } else {
+            mToastMessage = Toast.makeText(getApplicationContext(), R.string.incorrect_toast, Toast.LENGTH_LONG);
+        }
+
+        mToastMessage.show();
+
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("ScoreKey", mScore);
+        outState.putInt("IndexKey", mIndex);
+    }
+
+}
+
+
+

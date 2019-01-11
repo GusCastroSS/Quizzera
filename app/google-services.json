@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1078622561803",
+    "firebase_url": "https://quizzera-25256.firebaseio.com",
+    "project_id": "quizzera-25256",
+    "storage_bucket": "quizzera-25256.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078622561803:android:6ed907d21fb9b7fe",
+        "android_client_info": {
+          "package_name": "com.gustavocastro.quizzera"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1078622561803-p5409ja80c52a5ht7e3brf43i3i6ffm0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDENM1kE4Ack1rfi_HAY1tjIUj7ILVx9Cc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
