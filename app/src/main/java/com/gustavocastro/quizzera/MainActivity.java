@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -15,8 +16,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.gustavocastro.quizzera.R;
 
 import static android.widget.Toast.makeText;
@@ -36,7 +40,7 @@ public class MainActivity extends Activity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference scoreRef;
     private FirebaseAuth mAuth;
-
+    private String score;
 
     @NonNull
     private TrueFalse[] mQuestionBank = new TrueFalse[] {
@@ -53,10 +57,7 @@ public class MainActivity extends Activity {
 
     };
 
-
     final int PROGRESS_BAR_INCREMENT = (int) Math.ceil(100.0 / mQuestionBank.length);
-
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,13 +68,40 @@ public class MainActivity extends Activity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String userId = currentUser.getUid();
-        scoreRef = mFirebaseDatabase.getReference().child(userId);
+        scoreRef = mFirebaseDatabase.getReference().child(userId).child("Pontuacao");
+
+        scoreRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null){
+                    scoreRef.setValue(0);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         mTrueButton = findViewById(R.id.true_button);
         mFalseButton = findViewById(R.id.false_button);
         mQuestionTextView = findViewById(R.id.question_text_view);
         mScoreTextView = findViewById(R.id.score);
         mProgressBar = findViewById(R.id.progress_bar);
+
+        scoreRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                score = String.valueOf(dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         if (savedInstanceState != null) {
@@ -111,17 +139,14 @@ public class MainActivity extends Activity {
         mIndex = (mIndex + 1) % mQuestionBank.length;
 
         if(mIndex == 0) {
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            final AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Fim de jogo!");
             alert.setCancelable(false);
             alert.setMessage("Você conseguiu " + mScore + " pontos!");
             alert.setPositiveButton("Jogar novamente", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    scoreRef.child("pontuacao").setValue(mScore);
-
-                    Intent i = new Intent(MainActivity.this, Categorias.class);
-                    startActivity(i);
+                    escrever();
                 }
             });
             alert.show();
@@ -161,6 +186,28 @@ public class MainActivity extends Activity {
 
         outState.putInt("ScoreKey", mScore);
         outState.putInt("IndexKey", mIndex);
+    }
+
+    public void escrever(){
+        scoreRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                score = String.valueOf(dataSnapshot.getValue());
+                Log.i("msg",score);
+
+                if (Integer.parseInt(score) < mScore){
+                    scoreRef.setValue(mScore);
+                }
+
+                Intent i = new Intent(MainActivity.this, Categorias.class);
+                startActivity(i);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

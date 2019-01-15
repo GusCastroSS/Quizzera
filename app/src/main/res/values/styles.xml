@@ -1,6 +1,5 @@
 <resources>
 
-    <!-- Using Base.Theme because AppCompat 26.1.0 dependency has issues with NoActionBar style -->
     <style name="AppTheme" parent="Base.Theme.AppCompat.Light">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -10,7 +9,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!-- Both buttons share a similar style attibutes so we can put them here -->
     <style name="buttonStyle" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>

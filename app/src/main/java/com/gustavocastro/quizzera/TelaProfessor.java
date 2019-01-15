@@ -1,11 +1,13 @@
 package com.gustavocastro.quizzera;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -70,10 +72,18 @@ public class TelaProfessor extends AppCompatActivity {
         });
     }
 
+    public void onClick(){
+        recreate();
+    }
+
     private void cadastrar(){
 
         String valor = pergunta.getText().toString();
 
+        registroRef.child(categoriaSelecionada).child(valor).setValue(resposta);
 
+        Toast.makeText(this, "Sucesso", Toast.LENGTH_SHORT).show();
+
+        onClick();
     }
 }

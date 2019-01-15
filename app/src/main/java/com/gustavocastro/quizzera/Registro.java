@@ -35,6 +35,7 @@ public class Registro extends AppCompatActivity {
     private RadioButton professorButton;
     private RadioButton alunoButton;
     private RadioGroup select;
+    private DatabaseReference pontuacaoRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +106,12 @@ public class Registro extends AppCompatActivity {
 
                             if (codProfessor.getVisibility() == View.VISIBLE){
                                 registroRef.child("professor").setValue("sim");
+                                registroRef.child("Pontuacao").setValue(0);
 
                             }else{
 
                                 registroRef.child("professor").setValue("nao");
+                                registroRef.child("Pontuacao").setValue(0);
                             }
 
                         Intent j = new Intent(Registro.this, Categorias.class);

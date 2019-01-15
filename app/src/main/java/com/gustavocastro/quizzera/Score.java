@@ -19,6 +19,7 @@ public class Score extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference scoreRef;
     private FirebaseAuth mAuth;
+    private String valor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +32,14 @@ public class Score extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String userId = currentUser.getUid();
-        scoreRef = mFirebaseDatabase.getReference().child(userId).child("pontuacao");
+        scoreRef = mFirebaseDatabase.getReference().child(userId).child("Pontuacao");
 
-        scoreRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        scoreRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long value = dataSnapshot.getValue(long.class);
-                String strLong = Long.toString(value);
-                scoreTextView.setText(strLong);
+                valor = String.valueOf(dataSnapshot.getValue());
+                scoreTextView.setText(valor);
             }
 
             @Override
